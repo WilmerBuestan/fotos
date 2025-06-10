@@ -1,5 +1,7 @@
 {
   "name": "buscador-fotos-trail",
+    "homepage": "https://github.com/WilmerBuestan/fotos.git",
+
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -19,8 +21,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-      "predeploy": "npm run build",
-  "deploy": "gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -42,8 +44,5 @@
   },
   "devDependencies": {
     "gh-pages": "^6.3.0"
-  },
-  "homepage": "https://github.com/WilmerBuestan/fotos.git"
-
-
+  }
 }

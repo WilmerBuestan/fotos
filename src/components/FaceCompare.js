@@ -1,14 +1,25 @@
 // src/components/FaceCompare.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as faceapi from 'face-api.js';
-import { ref, listAll, getDownloadURL } from 'firebase/storage';
-import { storage } from '../firebase';
 
 const FaceCompare = () => {
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
   const [matches, setMatches] = useState([]);
   const [selfieUrl, setSelfieUrl] = useState(null);
+
+  useEffect(() => {
+    const loadModels = async () => {
+      const MODEL_URL = '/models';
+      await Promise.all([
+        faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
+        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+      ]);
+      console.log('✅ Modelos cargados correctamente');
+    };
+    loadModels();
+  }, []);
 
   const loadImageSafely = async (url) => {
     try {
@@ -42,15 +53,14 @@ const FaceCompare = () => {
     const selfieDescriptor = selfieDetection.descriptor;
     const faceMatcher = new faceapi.FaceMatcher(selfieDescriptor);
 
-    // Leer todas las fotos del folder en Firebase Storage
-    const folderRef = ref(storage, 'fotos-evento2025');
-    const list = await listAll(folderRef);
-    const urls = await Promise.all(list.items.map(item => getDownloadURL(item)));
+    // 👉 Obtener las imágenes desde la API de Cloudinary
+    console.log("📥 Obteniendo imágenes desde Cloudinary...");
+    const response = await fetch('/api/get-images');
+    const urls = await response.json();
 
     const matchingPhotos = [];
 
-    for (let i = 0; i < urls.length; i++) {
-      const url = urls[i];
+    for (const url of urls) {
       console.log('🔍 Probando imagen:', url);
       const image = await loadImageSafely(url);
       if (!image) continue;
