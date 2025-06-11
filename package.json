@@ -1,7 +1,6 @@
 {
   "name": "buscador-fotos-trail",
-    "homepage": "https://github.com/WilmerBuestan/fotos.git",
-
+  "homepage": "https://github.com/WilmerBuestan/fotos.git",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,7 +9,6 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "face-api.js": "^0.22.2",
-    "firebase": "^11.9.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-scripts": "5.0.1",
