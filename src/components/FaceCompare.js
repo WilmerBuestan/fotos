@@ -10,7 +10,7 @@ const FaceCompare = () => {
 
   useEffect(() => {
     const loadModels = async () => {
-      const MODEL_URL = '/models';
+      const MODEL_URL = process.env.PUBLIC_URL + '/models';
       await Promise.all([
         faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
         faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
@@ -53,15 +53,17 @@ const FaceCompare = () => {
     const selfieDescriptor = selfieDetection.descriptor;
     const faceMatcher = new faceapi.FaceMatcher(selfieDescriptor);
 
-    // 👉 Obtener las imágenes desde la API de Cloudinary
-    console.log("📥 Obteniendo imágenes desde Cloudinary...");
-    const response = await fetch('/api/get-images');
-    const urls = await response.json();
+    // 👉 Leer imágenes locales (rutas fijas)
+    const imageNames = [
+      'imagen1.jpg',
+      'imagen2.jpg',
+      'imagen3.jpg'
+    ];
+    const urls = imageNames.map(name => process.env.PUBLIC_URL + `/fotos-evento2025/${name}`);
 
     const matchingPhotos = [];
 
     for (const url of urls) {
-      console.log('🔍 Probando imagen:', url);
       const image = await loadImageSafely(url);
       if (!image) continue;
 
